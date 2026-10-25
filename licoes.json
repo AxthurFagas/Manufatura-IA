@@ -1,0 +1,23 @@
+
+[
+  {
+    "id": 1,
+    "equipamento": "Prensa hidráulica PH-01",
+    "etapa": "Instalação",
+    "problema": "Vibração excessiva durante os testes iniciais.",
+    "causa": "Nivelamento inadequado da base, conforme identificado na inspeção.",
+    "solucao": "A equipe corrigiu o nivelamento e realizou novos testes.",
+    "resultado": "A vibração foi reduzida após a correção.",
+    "status": "Exemplo fictício para teste"
+  },
+  {
+    "id": 2,
+    "equipamento": "Esteira transportadora ET-02",
+    "etapa": "Comissionamento",
+    "problema": "Desalinhamento da correia durante os testes.",
+    "causa": "Ajuste inadequado dos roletes.",
+    "solucao": "A equipe ajustou os roletes e verificou o alinhamento.",
+    "resultado": "O alinhamento foi corrigido durante os testes.",
+    "status": "Exemplo fictício para teste"
+  }
+]
