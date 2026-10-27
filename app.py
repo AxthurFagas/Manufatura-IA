@@ -1,41 +1,46 @@
-
 import json
 from pathlib import Path
 import ollama
+import numpy as np
 
 MODELO = "qwen3:4b"
+MODELO_EMBEDDING = "nomic-embed-text"
 ARQUIVO_LICOES = Path(__file__).parent / "licoes.json"
-
 
 def carregar_licoes():
     with open(ARQUIVO_LICOES, "r", encoding="utf-8") as arquivo:
         return json.load(arquivo)
 
+def gerar_embedding(texto):
+    resposta = ollama.embeddings(model=MODELO_EMBEDDING, prompt=texto)
+    return np.array(resposta["embedding"])
 
-def buscar_licoes(pergunta, licoes):
-    termos = set(pergunta.lower().split())
-    resultados = []
+def calcular_similaridade(vetor1, vetor2):
+    return np.dot(vetor1, vetor2) / (np.linalg.norm(vetor1) * np.linalg.norm(vetor2))
 
+def criar_indice_semantico(licoes):
+    print("Criando índice semântico das lições... Aguarde.")
+    indice = []
     for licao in licoes:
-        texto = " ".join(str(valor) for valor in licao.values()).lower()
-        pontuacao = sum(1 for termo in termos if termo in texto)
+        texto_combinado = f"{licao.get('equipamento', '')} {licao.get('problema', '')} {licao.get('causa', '')} {licao.get('solucao', '')}"
+        vetor = gerar_embedding(texto_combinado)
+        indice.append({"vetor": vetor, "licao": licao})
+    return indice
 
-        if pontuacao > 0:
-            resultados.append((pontuacao, licao))
-
-    resultados.sort(key=lambda item: item[0], reverse=True)
+def buscar_licoes_semanticas(pergunta, indice):
+    vetor_pergunta = gerar_embedding(pergunta)
+    resultados = []
+    for item in indice:
+        similaridade = calcular_similaridade(vetor_pergunta, item["vetor"])
+        resultados.append((similaridade, item["licao"]))
+    resultados.sort(key=lambda x: x[0], reverse=True)
     return [licao for _, licao in resultados[:3]]
-
 
 def responder(pergunta, licoes_encontradas):
     if not licoes_encontradas:
         contexto = "Nenhuma lição aprendida correspondente foi encontrada."
     else:
-        contexto = json.dumps(
-            licoes_encontradas,
-            ensure_ascii=False,
-            indent=2
-        )
+        contexto = json.dumps(licoes_encontradas, ensure_ascii=False, indent=2)
 
     resposta = ollama.chat(
         model=MODELO,
@@ -62,46 +67,29 @@ def responder(pergunta, licoes_encontradas):
             }
         ]
     )
-
     return resposta["message"]["content"]
 
-
 def main():
-    print("=== Assistente de Manufatura ===")
+    print("=== Assistente de Manufatura (Busca Semântica) ===")
     print("Digite 'sair' para encerrar.\n")
-
     try:
         licoes = carregar_licoes()
-    except (OSError, json.JSONDecodeError) as erro:
-        print(f"Erro ao carregar licoes.json: {erro}")
+        indice_semantico = criar_indice_semantico(licoes)
+    except Exception as erro:
+        print(f"Erro: {erro}")
         return
 
     while True:
         pergunta = input("Você: ").strip()
-
-        if pergunta.lower() == "sair":
-            break
-
-        if not pergunta:
-            continue
-
-        encontradas = buscar_licoes(pergunta, licoes)
-
-        print(f"\nLições recuperadas: {len(encontradas)}")
-
+        if pergunta.lower() == "sair": break
+        if not pergunta: continue
+        encontradas = buscar_licoes_semanticas(pergunta, indice_semantico)
+        print(f"\nLições recuperadas por similaridade: {len(encontradas)}")
         if not encontradas:
-            print(
-                "\nAssistente: Não encontrei lições aprendidas "
-                "correspondentes a essa pergunta na base de conhecimento. "
-                "Não há evidências suficientes para fornecer uma orientação. "
-                "Verifique se o equipamento está cadastrado ou consulte "
-                "o responsável técnico.\n"
-            )
+            print("\nAssistente: Não encontrei lições correspondentes.\n")
             continue
-
         resposta = responder(pergunta, encontradas)
         print(f"\nAssistente: {resposta}\n")
-
 
 if __name__ == "__main__":
     main()
