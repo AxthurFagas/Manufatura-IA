@@ -1,4 +1,3 @@
-
 [
   {
     "id": 1,
@@ -18,6 +17,56 @@
     "causa": "Ajuste inadequado dos roletes.",
     "solucao": "A equipe ajustou os roletes e verificou o alinhamento.",
     "resultado": "O alinhamento foi corrigido durante os testes.",
+    "status": "Exemplo fictício para teste"
+  },
+  {
+    "id": 3,
+    "equipamento": "Motor Elétrico ME-05",
+    "etapa": "Operação",
+    "problema": "Superaquecimento do motor após 2 horas de uso.",
+    "causa": "Obstrução no sistema de ventilação e acúmulo de resíduos nas aletas de resfriamento.",
+    "solucao": "Limpeza completa do sistema de refrigeração e instalação de filtro de ar.",
+    "resultado": "A temperatura estabilizou dentro dos parâmetros nominais.",
+    "status": "Exemplo fictício para teste"
+  },
+  {
+    "id": 4,
+    "equipamento": "CLP Siemens S7-1200",
+    "etapa": "Automação",
+    "problema": "Intermitência na comunicação com o IHM (Interface Homem-Máquina).",
+    "causa": "Interferência eletromagnética no cabo de rede devido à proximidade com cabos de potência.",
+    "solucao": "Substituição do cabo de rede por um cabo blindado (STP) e separação física dos condutores.",
+    "resultado": "A comunicação tornou-se estável e sem perdas de pacotes.",
+    "status": "Exemplo fictício para teste"
+  },
+  {
+    "id": 5,
+    "equipamento": "Bomba Centrifuga BC-10",
+    "etapa": "Manutenção",
+    "problema": "Queda brusca de pressão na saída da bomba.",
+    "causa": "Cavitação causada por entrada de ar na tubulação de sucção.",
+    "solucao": "Substituição da junta de vedação da flange de entrada e sangria do sistema.",
+    "resultado": "A pressão de saída retornou ao valor de projeto.",
+    "status": "Exemplo fictício para teste"
+  },
+  {
+    "id": 6,
+    "equipamento": "Sensor de Pressão PT-01",
+    "etapa": "Calibração",
+    "problema": "Leituras instáveis e oscilantes no supervisório.",
+    "causa": "Falha no aterramento do sensor, gerando ruído elétrico no sinal 4-20mA.",
+    "solucao": "Instalação de cabo de aterramento dedicado para a carcaça do sensor.",
+    "resultado": "Sinal estabilizado e leitura precisa.",
+    "status": "Exemplo fictício para teste"
+  },
+  {
+    "id": 7,
+    "equipamento": "Braço Robótico UR-10",
+    "etapa": "Operação",
+    "problema": "Desvio de precisão no ponto final de deposição da peça.",
+    "causa": "Desgaste prematuro da correia de transmissão do eixo J3.",
+    "solucao": "Substituição da correia e recalibração do zero-máquina (homing).",
+    "resultado": "Precisão recuperada para 0.03mm.",
     "status": "Exemplo fictício para teste"
   }
 ]
