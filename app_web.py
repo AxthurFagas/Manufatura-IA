@@ -40,7 +40,7 @@ def buscar_licoes_semanticas(pergunta, indice):
         similaridade = calcular_similaridade(vetor_pergunta, item["vetor"])
         resultados.append((similaridade, item["licao"]))
     resultados.sort(key=lambda x: x[0], reverse=True)
-    return resultados[:3]
+    return resultados
 
 def responder(pergunta, licoes_encontradas):
     if not licoes_encontradas:
